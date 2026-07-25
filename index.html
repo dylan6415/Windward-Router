@@ -474,7 +474,10 @@
           <td style="color: ${route.isPossible ? '#4ade80' : 'var(--text-muted)'}; font-weight: bold;">
             ${route.isPossible ? '$' + route.profit.toLocaleString() : '--'}
           </td>
-        `;
+          <td style="color: ${route.isPossible ? '#4ade80' : 'var(--text-muted)'}; font-weight: bold;">
+            ${route.isPossible ? '$' + route.profitPerMin.toFixed(2) : '--'}
+          </td>
+      `;
         resultsBody.appendChild(row);
       });
     }
