@@ -164,9 +164,9 @@
     }
     
     .badge-valid { background: #0284c7; color: #fff; }
-    .badge-impossible { background: #ef4444; color: #fff; }
+    .badge-inefficient { background: #ef4444; color: #fff; }
     
-    tr.impossible-row {
+    tr.inefficient-row {
       opacity: 0.5;
     }
   </style>
@@ -175,7 +175,7 @@
 
   <header>
     <h1>Windward Route & Navigation Optimizer</h1>
-    <p>Filters out impossible upwind routes based on wind direction.</p>
+    <p>Filters out inefficient upwind routes based on wind direction.</p>
   </header>
 
   <div class="grid-container">
@@ -343,8 +343,8 @@
     };
 
     const SHIP_CONFIGS = {
-      "Prince": { tonnage: 230 },
-      "Ontario": { tonnage: 200 }
+      "Prince": { tonnage: 229.6 },
+      "Ontario": { tonnage: 202 }
     };
 
     let PORTS = [];
@@ -352,7 +352,7 @@
     // Benchmark distance for Sainte Rose [455, 97.75] -> New Catalina [811.22, 639.31]
     const BENCHMARK_DIST = Math.hypot(811.22 - 455, 639.31 - 97.75); // ~648.512
     // Profit multiplier: $4950 profit for Prince (230 tonnage) over BENCHMARK_DIST
-    const PROFIT_PER_UNIT_PER_TON = (4950 / 230) / BENCHMARK_DIST; 
+    const PROFIT_PER_UNIT_PER_TON = (4950 / 229.6) / BENCHMARK_DIST; 
 
     // Constant time factor calibrated from: Sainte Rose -> Port Louis (304.7 units) @ 21.5 kts = 25 min
     const BENCHMARK_TIME_FACTOR = (25 * 21.5) / 304.7;
@@ -447,7 +447,7 @@
         }
       });
 
-      // Sort by Est. Time ascending (Shortest trips first, Impossible at bottom)
+      // Sort by Est. Time ascending (Shortest trips first, inefficient at bottom)
       routeData.sort((a, b) => {
         if (a.isPossible !== b.isPossible) return b.isPossible ? 1 : -1;
         return a.timeNum - b.timeNum;
@@ -455,11 +455,11 @@
 
       routeData.forEach(route => {
         const row = document.createElement('tr');
-        if (!route.isPossible) row.classList.add('impossible-row');
+        if (!route.isPossible) row.classList.add('inefficient-row');
         
         const badge = route.isPossible 
           ? `<span class="badge badge-valid">Possible</span>` 
-          : `<span class="badge badge-impossible">Impossible</span>`;
+          : `<span class="badge badge-inefficient">inefficient</span>`;
 
         row.innerHTML = `
           <td><strong>${route.name}</strong></td>
