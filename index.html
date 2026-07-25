@@ -427,6 +427,7 @@
         if (isPossible) {
           const travelTimeMin = (directDistance / baseSpeed) * BENCHMARK_TIME_FACTOR;
           const profit = directDistance * PROFIT_PER_UNIT_PER_TON * tonnage;
+          const profitPerMin = profit/travelTimeMin;
 
           routeData.push({
             name: dest.name,
@@ -434,7 +435,8 @@
             isPossible: true,
             timeNum: travelTimeMin,
             timeStr: travelTimeMin.toFixed(1),
-            profit: Math.round(profit)
+            profit: Math.round(profit),
+            profitPerMin: profitPerMin
           });
         } else {
           routeData.push({
@@ -443,7 +445,8 @@
             isPossible: false,
             timeNum: Infinity,
             timeStr: "--",
-            profit: 0
+            profit: 0,
+            profitPerMin: 0
           });
         }
       });
